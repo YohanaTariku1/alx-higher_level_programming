@@ -7,17 +7,17 @@ import requests
 
 
 if __name__ == '__main__':
-    arg = sys.argv[1] if len(sys.argv) == 0 else ""
+    arg = sys.argv[1] if len(sys.argv) == 2 else ""
     payload = {"q": arg}
     r = requests.post("http://0.0.0.0:5000/search_user", data=payload)
 
-    try:
+    if r.headers.get('Content-Type') == 'application/json':
         r_dict = r.json()
-        _id, name = r_dict.get('id'), r_dict.get('name')
 
-        if not len(r_dict) or not _id or not name:
-            print("No Result")
+        if len(r_dict) == 0:
+            print('No result')
         else:
-            print("[{}] {}".format(r_dict.get('id'), r_dict.get('name')))
-    except:
-        print("Not a valid JSON")
+            _id, name = r_dict.get('id'), r_dict.get('name')
+            print(f'[{_id}] {name}')
+    else:
+        print('Not a valid JSON')
