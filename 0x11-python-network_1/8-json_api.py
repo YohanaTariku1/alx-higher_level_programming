@@ -14,9 +14,11 @@ if __name__ == '__main__':
     r = requests.post("http://0.0.0.0:5000/search_user", data=payload)
     r_dict = r.json()
 
+    if not r.headers.get('Content-Type').startswith('application/json'):
+        print("Not a valid JSON")
+        sys.exit()
+
     if len(r_dict) == 0:
         print("No Result")
-    elif r_dict.get('id') is None:
-        print("Not a valid JSON")
-    else:
-        print(f"[{r_dict.get('id')}] {r_dict.get('name')}")
+        sys.exit()
+    print(f"[{r_dict.get('id')}] {r_dict.get('name')}")
