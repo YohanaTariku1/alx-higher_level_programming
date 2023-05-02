@@ -1,4 +1,9 @@
 #!/usr/bin/python3
+"""Script that takes 2 arguments:
+    The first argument will be the repository name
+    The second argument will be the owner name
+
+"""
 from sys import argv
 import requests
 
