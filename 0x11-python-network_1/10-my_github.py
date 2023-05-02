@@ -4,13 +4,12 @@
 to display your id
 """
 from sys import argv
+from requests.auth import HTTPBasicAuth
 import requests
 
 
 if __name__ == '__main__':
-    url = f"https://api.github.com/users/{argv[1]}"
-    payload = {"Authorization": f"Bearer {argv[2]},\
-            Accept: application/vnd.github+json"}
-    r = requests.get(url, params=payload)
+    url = f"https://api.github.com/users/"
+    r = requests.get(url, auth=HTTPBasicAuth(argv[1], argv[2])) 
 
-    print(r.json()['id'])
+    print(r.json().get('id'))
