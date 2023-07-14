@@ -1,21 +1,21 @@
 #!/usr/bin/python3
-"""Script that takes 2 arguments:
-    The first argument will be the repository name
-    The second argument will be the owner name
-
+"""Lists the 10 most recent commits on a given GitHub repository.
+Usage: ./100-github_commits.py <repository name> <repository owner>
 """
-from sys import argv
+import sys
 import requests
 
 
-if __name__ == '__main__':
-    url = f"https://api.github.com/repos/{argv[2]}/{argv[1]}/commits"
-    payload = {"Accept": "application/vnd.github+json"}
-    r = requests.get(url, params=payload)
+if __name__ == "__main__":
+    url = "https://api.github.com/repos/{}/{}/commits".format(
+        sys.argv[2], sys.argv[1])
 
-    response_list = r.json()
-    for idx, val in enumerate(response_list):
-        if idx >= 10:
-            break
-        print(f"{val.get('sha')}: \
-        {val.get('commit').get('author').get('name')}")
+    r = requests.get(url)
+    commits = r.json()
+    try:
+        for i in range(10):
+            print("{}: {}".format(
+                commits[i].get("sha"),
+                commits[i].get("commit").get("author").get("name")))
+    except IndexError:
+        pass
